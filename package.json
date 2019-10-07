@@ -6,6 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benjamin-trosien/simple-logger"
+  },
+  "keywords": [],
   "author": "benjamin trosien",
-  "license": "ISC"
+  "license": "ISC",
+  "homepage": "https://github.com/benjamin-trosien/simple-logger#readme"
 }
