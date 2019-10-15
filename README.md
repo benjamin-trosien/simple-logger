@@ -24,7 +24,7 @@ Logger.info('your message')
 ```
 You can use all format options provided by https://www.npmjs.com/package/dateformat, default is "isoDateTime"
 
-![example](https://github.com/benjamin-trosien/simple-logger/example.png)
+![Example](example.png?raw=true "Example")
 
 ### Methods
 ```
