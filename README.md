@@ -22,6 +22,7 @@ Logger.format = 'dddd, mmmm dS, yyyy, h:MM:ss TT';
 Logger.info('your message')
 // [Saturday, June 9th, 2007, 5:46:21 PM] [INFO] your message
 ```
+You can use all format options provided by https://www.npmjs.com/package/dateformat, default is "isoDateTime"
 
 ### Methods
 ```
@@ -32,6 +33,3 @@ Logger.info('your message') // cyan
 Logger.log('your message') // white
 Logger.warn('your message') // yellow
 ```
-
-
-You can use all format options provided by https://www.npmjs.com/package/dateformat
