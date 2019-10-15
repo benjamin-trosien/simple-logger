@@ -24,11 +24,13 @@ Logger.info('your message')
 ```
 You can use all format options provided by https://www.npmjs.com/package/dateformat, default is "isoDateTime"
 
+![example](https://github.com/benjamin-trosien/simple-logger/example.png)
+
 ### Methods
 ```
 Logger.debug('your message') // grey
 Logger.error('your message') // red
-Logger.hint('your message') // magenta
+Logger.hint('your message') // green
 Logger.info('your message') // cyan
 Logger.log('your message') // white
 Logger.warn('your message') // yellow
