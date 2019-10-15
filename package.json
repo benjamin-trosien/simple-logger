@@ -1,13 +1,17 @@
 {
   "name": "ts-node-logger",
   "version": "1.0.4",
-  "description": "",
+  "description": "lightweight logger written in typescript",
   "main": "lib/index.js",
   "types": "lib/index.d.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "npm run build",
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "tslint -p tsconfig.json",
+    "prepublishOnly" : "npm test && npm run lint",
+    "preversion" : "npm run lint",
+    "postversion" : "git push && git push --tags"
   },
   "repository": {
     "type": "git",
@@ -17,13 +21,14 @@
     "@types/colors": "^1.2.1",
     "@types/dateformat": "^3.0.1",
     "@types/node": "^12.7.9",
+    "tslint": "^5.20.0",
     "typescript": "^3.6.3"
   },
   "dependencies": {
     "colors": "^1.3.3",
     "dateformat": "^3.0.3"
   },
-  "keywords": [],
+  "keywords": [ "logger", "typescript", "node" ],
   "author": "benjamin trosien",
   "license": "ISC",
   "files": [

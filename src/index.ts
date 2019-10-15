@@ -1,49 +1,50 @@
 import { inspect } from 'util';
 
-const colors = require('colors');
-const dateFormat = require('dateformat');
+import colors = require('colors');
+import dateFormat = require('dateformat');
 
 export class Logger {
-    private static format = 'isoDateTime';
-    private static isDebug = [ 'development', 'dev' ].includes(process.env.NODE_ENV || 'dev');
 
-    static debug(...args: any[]) {
+    public static debug(...args: any[]): void {
         if (Logger.isDebug) {
             const now = dateFormat(new Date(), Logger.format);
             const message = Logger.getMessage(...args);
-            console.log(colors.grey(`[${ now }]`), colors.grey('[DEBUG]'), message);
+            console.debug(colors.grey(`[${ now }]`), colors.grey('[DEBUG]'), message);
         }
     }
 
-    static error(...args: any[]) {
+    public static error(...args: any[]): void {
         const now = dateFormat(new Date(), Logger.format);
         const message = Logger.getMessage(...args);
-        console.log(colors.grey(`[${ now }]`), colors.red('[ERROR]'), message);
+        console.error(colors.grey(`[${ now }]`), colors.red('[ERROR]'), message);
     }
 
-    static hint(...args: any[]) {
+    public static hint(...args: any[]): void {
         const now = dateFormat(new Date(), Logger.format);
         const message = Logger.getMessage(...args);
-        console.log(colors.grey(`[${ now }]`), colors.magenta('[HINT]'), message);
+        console.log(colors.grey(`[${ now }]`), colors.green('[HINT]'), message);
     }
 
-    static info(...args: any[]) {
+    public static info(...args: any[]): void {
         const now = dateFormat(new Date(), Logger.format);
         const message = Logger.getMessage(...args);
-        console.log(colors.grey(`[${ now }]`), colors.cyan('[INFO]'), message);
+        console.info(colors.grey(`[${ now }]`), colors.cyan('[INFO]'), message);
     }
 
-    static log(...args: any[]) {
+    public static log(...args: any[]): void {
         const now = dateFormat(new Date(), Logger.format);
         const message = Logger.getMessage(...args);
         console.log(colors.grey(`[${ now }]`), '[LOG]', message);
     }
 
-    static warn(...args: any[]) {
+    public static warn(...args: any[]): void {
         const now = dateFormat(new Date(), Logger.format);
         const message = Logger.getMessage(...args);
-        console.log(colors.grey(`[${ now }]`), colors.yellow('[WARN]'), message);
+        console.warn(colors.grey(`[${ now }]`), colors.yellow('[WARN]'), message);
     }
+
+    private static format = 'isoDateTime';
+    private static isDebug = [ 'development', 'dev' ].includes(process.env.NODE_ENV || 'dev');
 
     private static getMessage(...args: any[]): string {
         return args.map((arg) => {
