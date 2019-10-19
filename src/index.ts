@@ -4,7 +4,10 @@ import dateFormat = require('dateformat');
 import util = require('util');
 
 export class Logger {
+    public static colors = false;
     public static format = 'isoDateTime';
+    public static hidden = false;
+    public static depth = null;
 
     public static debug(...args: any[]): void {
         if (Logger.isDebug) {
@@ -47,7 +50,7 @@ export class Logger {
     private static isDebug = [ 'development', 'dev' ].includes(process.env.NODE_ENV || 'dev');
 
     private static print(arg: any): void {
-        process.stdout.write(util.formatWithOptions({ colors: true }, arg));
+        process.stdout.write(util.formatWithOptions({ colors: Logger.colors, depth: Logger.depth, showHidden: Logger.hidden }, arg));
     }
 
     private static printArguments(...args: any[]): void {
