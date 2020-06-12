@@ -5,18 +5,18 @@ import * as dateFormat from 'dateformat';
 import * as util from 'util';
 
 export class Logger {
-    private type: string;
-    private isDebug = [ 'development', 'dev' ].includes(process.env.NODE_ENV || 'dev');
-    private currentDepth: number = 0;
+    public static getLogger(module?: string): Logger {
+        return new Logger(module);
+    }
 
     public colors: boolean = true;
     public hidden: boolean = false;
     public printLevel: boolean = true;
     public format: string | null = 'isoDateTime';
 
-    public static getLogger(module?: string): Logger {
-        return new Logger(module);
-    }
+    private type: string;
+    private isDebug = [ 'development', 'dev' ].includes(process.env.NODE_ENV || 'dev');
+    private currentDepth: number = 0;
 
     constructor(type: string = '') {
         this.type = constantCase(type);
