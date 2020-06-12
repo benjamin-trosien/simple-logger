@@ -2,9 +2,10 @@ import { Logger } from './src';
 
 const logger = Logger.getLogger();
 
-logger.format = null;
-logger.printLevel = false;
-console.log('\n\n\n');
+logger.colors = false;
+logger.printLevel = true;
+logger.format = 'default';
+
 logger.debug('debug');
 logger.error('error');
 logger.hint('hint');
@@ -23,8 +24,6 @@ class CustomToString {
         return `My value is ${ this.value }`;
     }
 }
-
-console.log('\n\n\n\n\n');
 
 console.log('=========> Basic types <=========');
 console.log(1);
