@@ -6,6 +6,7 @@
   "types": "lib/index.d.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx ts-node-dev --respawn example.ts",
     "prepare": "npm run build",
     "build": "tsc",
     "lint": "tslint -p tsconfig.json",
@@ -21,6 +22,7 @@
     "@types/colors": "^1.2.1",
     "@types/dateformat": "^3.0.1",
     "@types/node": "^12.12.47",
+    "ts-node-dev": "^1.0.0-pre.44",
     "tslint": "^5.20.1",
     "typescript": "^3.9.5"
   },
