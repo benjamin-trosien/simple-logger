@@ -19,6 +19,12 @@ export class Logger {
     private currentDepth: number = 0;
 
     constructor(type: string = '') {
+        this.debug = this.debug.bind(this);
+        this.error = this.error.bind(this);
+        this.hint = this.hint.bind(this);
+        this.info = this.info.bind(this);
+        this.log = this.log.bind(this);
+        this.warn = this.warn.bind(this);
         this.type = constantCase(type);
     }
 
