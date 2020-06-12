@@ -89,13 +89,13 @@ export class Logger {
     private printLine(color: colors.Color, level: string, ...args: any[]): void {
         if (this.format !== null) {
             const now = dateFormat(new Date(), this.format);
-            process.stdout.write(this.colors ? `${colors.grey(`[${now}]`)} `: `[${now}] `);
+            process.stdout.write(this.colors ? `${colors.grey(`[${now}]`)} ` : `[${now}] `);
         }
         if (this.type !== '') {
-            process.stdout.write(this.colors ? `${colors.grey(`[${this.type}]`)} `: `[${this.type}] `);
+            process.stdout.write(this.colors ? `${colors.grey(`[${this.type}]`)} ` : `[${this.type}] `);
         }
         if (this.printLevel) {
-            process.stdout.write(this.colors ? `${color(`[${level}]`)} `: `[${level}] `);
+            process.stdout.write(this.colors ? `${color(`[${level}]`)} ` : `[${level}] `);
         }
 
         this.printArguments(...args);
