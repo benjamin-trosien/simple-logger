@@ -1,74 +1,98 @@
 
-import colors = require('colors');
-import dateFormat = require('dateformat');
-import util = require('util');
+import { constantCase } from 'change-case';
+import * as colors from 'colors';
+import * as dateFormat from 'dateformat';
+import * as util from 'util';
 
 export class Logger {
-    public static colors = false;
-    public static format = 'isoDateTime';
-    public static hidden = false;
-    public static depth = null;
+    private type: string;
+    private isDebug = [ 'development', 'dev' ].includes(process.env.NODE_ENV || 'dev');
+    private currentDepth: number = 0;
 
-    public static debug(...args: any[]): void {
-        if (Logger.isDebug) {
-            const now = dateFormat(new Date(), Logger.format);
-            process.stdout.write(`${colors.grey(`[${ now }]`)} ${colors.grey('[DEBUG]')} `);
-            console.log(...args);
+    public colors: boolean = true;
+    public hidden: boolean = false;
+    public printLevel: boolean = true;
+    public format: string | null = 'isoDateTime';
+
+    public static getLogger(module?: string): Logger {
+        return new Logger(module);
+    }
+
+    constructor(type: string = '') {
+        this.type = constantCase(type);
+    }
+
+    public debug(...args: any[]): void {
+        if (this.isDebug) {
+            this.printLine(colors.grey, 'DEBUG', ...args);
         }
     }
 
-    public static error(...args: any[]): void {
-        const now = dateFormat(new Date(), Logger.format);
-        process.stdout.write(`${colors.grey(`[${ now }]`)} ${colors.red('[ERROR]')} `);
-        console.log(...args);
+    public error(...args: any[]): void {
+        this.printLine(colors.red, 'ERROR', ...args);
     }
 
-    public static hint(...args: any[]): void {
-        const now = dateFormat(new Date(), Logger.format);
-        process.stdout.write(`${colors.grey(`[${ now }]`)} ${colors.green('[HINT]')} `);
-        console.log(...args);
+    public hint(...args: any[]): void {
+        this.printLine(colors.green, 'HINT', ...args);
     }
 
-    public static info(...args: any[]): void {
-        const now = dateFormat(new Date(), Logger.format);
-        process.stdout.write(`${colors.grey(`[${ now }]`)} ${colors.cyan('[INFO]')} `);
-        console.log(...args);
+    public info(...args: any[]): void {
+        this.printLine(colors.cyan, 'INFO', ...args);
     }
 
-    public static log(...args: any[]): void {
-        const now = dateFormat(new Date(), Logger.format);
-        process.stdout.write(`${colors.grey(`[${ now }]`)} [LOG] `);
-        console.log(...args);
+    public log(...args: any[]): void {
+        this.printLine(colors.grey, 'LOG', ...args);
     }
 
-    public static warn(...args: any[]): void {
-        const now = dateFormat(new Date(), Logger.format);
-        process.stdout.write(`${colors.grey(`[${ now }]`)} ${colors.cyan('[WARNING]')} `);
-        console.log(...args);
+    public warn(...args: any[]): void {
+        this.printLine(colors.yellow, 'WARNING', ...args);
     }
 
-    private static isDebug = [ 'development', 'dev' ].includes(process.env.NODE_ENV || 'dev');
-
-    private static print(arg: any): void {
-        process.stdout.write(util.formatWithOptions({ colors: Logger.colors, depth: Logger.depth, showHidden: Logger.hidden }, arg));
+    private printElement(arg: any): void {
+        process.stdout.write(util.formatWithOptions({ colors: this.colors, depth: null, showHidden: this.hidden }, arg));
     }
 
-    private static printArguments(...args: any[]): void {
-        args.forEach((arg: any) => {
-            process.stdout.write(' ');
+    private printArguments(...args: any[]): void {
+        args.forEach((arg: any, index: number) => {
+            if (index > 0) {
+                process.stdout.write(' ');
+            }
 
             if (Array.isArray(arg)) {
                 process.stdout.write('[ ');
-                Logger.printArguments(...arg);
+                this.currentDepth++;
+                this.printArguments(...arg);
+                this.currentDepth--;
                 process.stdout.write(' ]');
-                return;
+            } else if (typeof arg === 'string' && (this.currentDepth > 0 || args.length > 1)) {
+                this.printElement(util.inspect(arg, this.hidden, null, this.colors));
+            } else if (typeof arg === 'number' || typeof arg === 'boolean' || arg === null || arg === undefined) {
+                this.printElement(arg);
+            } else if (typeof arg === 'object' && Object.prototype.toString !== arg.toString) {
+                this.printElement(arg.toString());
+            } else {
+                this.printElement(arg);
             }
 
-            if (typeof arg === 'object' && !!arg && Object.prototype.toString !== arg.toString) {
-                Logger.print(arg.toString());
-            } else {
-                Logger.print(arg);
+            if (this.currentDepth > 0 && index < args.length - 1) {
+                process.stdout.write(',');
             }
         });
+    }
+
+    private printLine(color: colors.Color, level: string, ...args: any[]): void {
+        if (this.format !== null) {
+            const now = dateFormat(new Date(), this.format);
+            process.stdout.write(`${colors.grey(`[${now}]`)} `);
+        }
+        if (this.type !== '') {
+            process.stdout.write(`${colors.grey(`[${this.type}]`)} `);
+        }
+        if (this.printLevel) {
+            process.stdout.write(`${color(`[${level}]`)} `);
+        }
+
+        this.printArguments(...args);
+        process.stdout.write('\n');
     }
 }
