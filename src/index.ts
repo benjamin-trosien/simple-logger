@@ -1,1 +1,1 @@
-export { Logger, LoggerOptions } from './logger';
+export { ILoggerOptions, Logger } from './logger';
