@@ -1,6 +1,6 @@
 # ts-node-logger
 
-Lightweight logger written in typescript. It can add a fully customizable timestamp, module and colored log level to any logging. Furthermore it supports custom `toString` implementations (this does not work if the object with custom `toString` implemenation is part of an array withing an object's property, see comparison to `console.log` below).
+Lightweight logger written in typescript. It adds a fully customizable timestamp, module and colored log level to any logging. Furthermore it supports custom `toString` implementations (this does not work if the object with custom `toString` implemenation is part of an array within an object's property, see comparison to `console.log` below).
 
 ## Getting Started
 
@@ -24,7 +24,7 @@ logger.format = 'dddd, mmmm dS, yyyy, h:MM:ss TT';
 logger.info('some message')
 // [Friday, June 12th, 2020, 4:04:15 PM] [INFO] some message
 ```
-All format options provided by https://www.npmjs.com/package/dateformat can be used, default is "isoDateTime"
+All format options provided by https://www.npmjs.com/package/dateformat can be used, default is "isoDateTime".
 
 A logger can also be created by calling the constructor
 ```
@@ -36,15 +36,27 @@ logger.info('some message')
 // [2020-06-12T16:03:53+0200] [INFO] some message
 ```
 
-On logger creation `getLogger` and the contructor can take a module string. It gets automatically converted to upper case with underscores.
+Both, `getLogger` and the constructor have an optional parameter of type `ILoggerOptions`.
+
+
+| Property | Type | Description | Default |
+| --- | --- | --- | --- |
+| colored? | boolean | turn on/off colored logging | true |
+| format? | string | timestamp format (see https://www.npmjs.com/package/dateformat) | 'isoDateTime' |
+| hidden? | boolean | is mapped to `showHidden` of `util.inspect` | false |
+| level? | boolean | show/hide the log level ([LOG], [ERROR], ...) | true |
+| module? | string | current module name where the logger is used (gets automatically converted to constant case (CONSTANT_CASE)) | '' (empty string) |
+
+Example with custom options
 ```
 import { Logger } from 'ts-node-logger';
 
-const logger = Logger.getLogger('some-module');
+const logger = Logger.getLogger({ format: 'default', module: 'example-module' });
 
 logger.info('some message')
-// [2020-06-12T16:08:56+0200] [SOME_MODULE] [INFO] some message
+[Sun Jun 14 2020 15:33:40] [EXAMPLE_MODULE] [INFO] example message
 ```
+All options can be changed with setter methods after logger creation.
 
 
 Colored logging for log level looks like this.

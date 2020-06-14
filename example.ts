@@ -1,17 +1,7 @@
 import { Logger } from './src';
 
-const logger = Logger.getLogger();
-
-logger.colors = false;
-logger.printLevel = true;
-logger.format = 'default';
-
-logger.debug('debug');
-logger.error('error');
-logger.hint('hint');
-logger.info('info');
-logger.log('log');
-logger.warn('warn');
+const logger = Logger.getLogger({ format: 'default', module: 'example-module' });
+logger.info('example message')
 
 class CustomToString {
     private value: number;
@@ -24,6 +14,18 @@ class CustomToString {
         return `My value is ${ this.value }`;
     }
 }
+
+logger.level = false;
+logger.format = null;
+logger.module = null;
+
+console.log('=========> Log levels <=========');
+logger.debug('debug');
+logger.error('error');
+logger.hint('hint');
+logger.info('info');
+logger.log('log');
+logger.warn('warn');
 
 console.log('=========> Basic types <=========');
 console.log(1);
@@ -56,8 +58,8 @@ console.log([ 'single string' ]);
 logger.log([ 'single string' ]);
 
 console.log('\n\n=========> Array of objects <=========');
-console.log([ { sample: true }, new CustomToString(2)]);
-logger.log([ { sample: true }, new CustomToString(2) ]);
+console.log([ { sample: true, _private: true }, new CustomToString(2)]);
+logger.log([ { sample: true, _private: true }, new CustomToString(2) ]);
 
 console.log('\n\n=========> Arrays with nested objects <=========');
 console.log([ { parent: [ { child: true } ] } ]);
